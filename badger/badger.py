@@ -12,13 +12,6 @@ class BadgerXBlock(XBlock):
     This XBlock will play an MP3 file as an HTML5 badger element. 
     """
 
-    # Fields are defined on the class.  You can access them in your code as
-    # self.<fieldname>.
-    src = String(
-           scope = Scope.settings, 
-           help = "URL for MP3 file to play"
-        )
-
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
         data = pkg_resources.resource_string(__name__, path)
@@ -31,10 +24,10 @@ class BadgerXBlock(XBlock):
         when viewing courses.
         """
         html = self.resource_string("static/html/badger.html")
-        print self.src
-        print html.format
-        frag = Fragment(html.format(src = self.src))
-        frag.add_css(self.resource_string("static/css/badger.css"))
+        #print html.format
+        html = html.replace("CSS", self.resource_string("static/css/badger.css"))
+        frag = Fragment(html)
+        #frag.add_css(self.resource_string("static/css/badger.css"))
         frag.add_javascript(self.resource_string("static/js/src/badger.js"))
         frag.initialize_js('BadgerXBlock')
         print self.xml_text_content()
@@ -48,9 +41,13 @@ class BadgerXBlock(XBlock):
         return [
             ("BadgerXBlock",
              """<vertical_demo>
-                  <badger src="http://localhost/Ikea.mp3"> </badger>
-                  <badger src="http://localhost/skull.mp3"> </badger>
-                  <badger src="http://localhost/monkey.mp3"> </badger>
+                  <badger> 
+                    edX platform/edx.png : dialog/dialog.png
+                    cleaner/cleaner.png 
+                    mentor/mentor.png : sage/sage.png
+                  </badger>
                 </vertical_demo>
              """),
         ]
+
+    

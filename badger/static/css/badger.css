@@ -1,9 +1,87 @@
 /* CSS for BadgerXBlock */
 
-.badger_block .count {
-    font-weight: bold;
+@hexactive:#6C6;
+@hexinactive:#AAA;
+@hexinvisible:#FFF;
+
+.hexbeforemixin {
+    content: " ";
+    width: 0; height: 0;
+    border-left: 52px solid transparent;
+    border-right: 52px solid transparent;
+    position: absolute;
+    top: -30px;
 }
 
-.badger_block p {
-    cursor: pointer;
+.hexaftermixin {
+    content: "";
+    width: 0;
+    position: absolute;
+    bottom: -30px;
+    border-left: 52px solid transparent;
+    border-right: 52px solid transparent;
+}
+
+.hexmixin {
+    margin-top: 32px;
+    margin-bottom: 3px;
+    width: 104px;
+    height: 60px;
+    margin-left: 5px;
+    margin-right: 5px;
+    position: relative;
+    float: left;
+}
+
+.active-hex:before {
+    .hexbeforemixin;
+    border-bottom: 30px solid @hexactive;
+}
+
+.active-hex:after {
+    border-top: 30px solid @hexactive;
+    .hexaftermixin;
+}
+
+.active-hex {
+    .hexmixin;
+    background-color: @hexactive;
+}
+
+.inactive-hex:before {
+    .hexbeforemixin;
+    border-bottom: 30px solid @hexinactive;
+}
+
+.inactive-hex:after {
+    border-top: 30px solid @hexinactive;
+    .hexaftermixin;
+}
+
+.inactive-hex {
+    .hexmixin;
+    background-color: @hexinactive;
+}
+
+.invisible-hex:before {
+    .hexbeforemixin;
+    border-bottom: 30px solid @hexinvisible;
+}
+
+.invisible-hex:after {
+    border-top: 30px solid @hexinvisible;
+    .hexaftermixin;
+}
+
+.invisible-hex {
+    .hexmixin;
+    background-color: @hexinvisible;
+}
+
+.hex-row {
+    clear: left;
+}
+
+.hex-row:nth-child(even) {
+    margin-left: 57px;
 }
