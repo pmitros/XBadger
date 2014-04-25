@@ -2,7 +2,7 @@
 
 @hexactive:#6C6;
 @hexinactive:#AAA;
-@hexinvisible:#FFF;
+@hexinvisible:#FFF0;
 
 .hexbeforemixin {
     content: " ";
