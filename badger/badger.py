@@ -38,7 +38,7 @@ def html_line(x1, y1, x2, y2):
     ''' HTML+CSS needed to draw a line from x1,y1 to x2,y2 relative to
     the current position in the HTML. 
     '''
-    html = '<div style="position:absolute"><div style="position:relative; top:{top}px; left:{left}px; transform:rotate({angle}deg);-webkit-transform:rotate({angle}deg);-ms-transform:rotate({angle}deg);"><div style="height:3px; background:#000; width:{width}px;"></div></div></div>'
+    html = '<div style="position:absolute"><div style="position:relative; top:{top}px; left:{left}px; transform:rotate({angle}deg);-webkit-transform:rotate({angle}deg);-ms-transform:rotate({angle}deg); z-index:100;"><div style="height:3px; background:#000; width:{width}px; z-index:100"></div></div></div>'
     rad = math.atan2(y2-y1, x2-x1)
     angle = rad/math.pi*180.
     width = math.sqrt((x2-x1)**2+(y2-y1)**2)
@@ -49,8 +49,6 @@ def html_line(x1, y1, x2, y2):
 
 child_layout = '''
       <div style="position:absolute; width:1024px;"><div style="position:relative; top:{top}px; left:{left}px; overflow:visible; width:1024px;">{title}</div></div>
-      <!--div style="position:absolute"><div style="position:relative; top:5px; left:100px; transform:rotate(-30deg);-webkit-transform:rotate(-30deg);-ms-transform:rotate(-30deg);"><div style="height:3px; background:#000; width:20px;"></div></div></div>
-      <div style="position:absolute"><div style="position:relative; top:0px; left:117px; transform:rotate(0deg);-webkit-transform:rotate(0deg);-ms-transform:rotate(0deg);"><div style="height:3px; background:#000; width:20px;"></div></div></div-->
 '''
 
 def layout_item(item):
@@ -63,9 +61,17 @@ def layout_item(item):
 
     children = ""
     yoffset = 0
+    center = 30
+    step = 20
+    position = center - (len(item['children'])-1.0)/2.0 * step 
     for child in item['children']:
-        children = children + child_layout.format(left=140,top = -7+yoffset, **child)
-        yoffset = yoffset+20
+        if child:
+            children = children + child_layout.format(left=200,top = -7+position, **child)
+            offset = abs(position-center)
+            children = children + html_line(125+offset-1, position, 200, position)
+            children = children + html_line(110, (position+center)/2, 126, (position+center)/2)
+            children = children + html_line(125, (position+center)/2, 125+offset, position)
+        position = position + step
 
     div = '<div class="'+item['status']+'-hex">'+children+'<div style="text-align:center">' + item['title'] + '</div></div>'
     return div
